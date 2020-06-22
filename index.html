@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Agustina Abalo, Tomás Bruno, Tomás Berretta, Pedro Bogunovich" />
+
+
+<title>Data analysis for Cardiovascular Event Predictor</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/magnific-popup-1.1.0/magnific-popup.css" rel="stylesheet" />
+<script src="site_libs/magnific-popup-1.1.0/jquery.magnific-popup.min.js"></script>
+<link href="site_libs/readthedown-0.1/readthedown.css" rel="stylesheet" />
+<script src="site_libs/readthedown-0.1/readthedown.js"></script>
+<script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+
+<div id="content" data-toggle="wy-nav-shift">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("text-table-of-contents");
+});
+</script>
+
+<!-- code folding -->
+
+<nav id="nav-top" role="navigation" aria-label="top navigation">
+    <a role="button" href="#" data-toggle="wy-nav-top"><span class="glyphicon glyphicon-menu-hamburger"></span></a>
+</nav>
+
+
+<div id="header">
+<h1 class="title">Data analysis for Cardiovascular Event Predictor</h1>
+</div>
+
+
+<div id="sidebar">
+    <h2><a href="#content">Data analysis for Cardiovascular Event Predictor</a></h2>
+    <div id="table-of-contents">
+      <ul>
+      <li><a href="#introduction">Introduction</a><ul>
+      <li><a href="#interesting-data-values">Interesting data values:</a></li>
+      <li><a href="#patients-according-to-gender">Patients according to gender</a></li>
+      <li><a href="#patients-that-suffered-an-event-according-to-risk-factors">Patients that suffered an event according to risk factors</a></li>
+      </ul></li>
+      <li><a href="#analysis">Analysis</a><ul>
+      <li><a href="#obesity-and-diabetes">Obesity and diabetes</a></li>
+      <li><a href="#ongoing-pain-and-anginal-syndrome">Ongoing pain and Anginal Syndrome</a></li>
+      <li><a href="#localized-pain">Localized pain</a></li>
+      </ul></li>
+      </ul>
+    </div>
+    
+    <div id="postamble" data-toggle="wy-nav-shift" class="status">
+              <p class="author"><span class="glyphicon glyphicon-user"></span> Agustina Abalo, Tomás Bruno, Tomás Berretta, Pedro Bogunovich</p>
+                  <p class="date"><span class="glyphicon glyphicon-calendar"></span> 14/5/2020</p>
+        </div>
+</div>
+
+<div id="main">
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>The data collected to make this graphs was taken from an already curated data set in which there are 1002 patients, from whom:</p>
+<ul>
+<li><p>407 are female</p></li>
+<li><p>595 are male</p></li>
+<li><p>Female mean age 47</p></li>
+<li><p>Male mean age 50</p></li>
+<li><p>121 suffered a cardiovascular event</p></li>
+</ul>
+<p>This data obtained is representative for this sample but may not apply for all the population.</p>
+<div id="interesting-data-values" class="section level2 tabset tabset-fade">
+<h2>Interesting data values:</h2>
+<div id="mean-age-of-patients-who-suffered-an-event" class="section level3 unnumbered unnumbered">
+<h3>Mean age of patients who suffered an event</h3>
+<p><strong>62.41 years</strong></p>
+</div>
+<div id="with-ongoing-pain-who-had-symptoms-older-than-62-and-suffered-an-event" class="section level3 unnumbered unnumbered">
+<h3>With ongoing pain who had symptoms, older than 62 and suffered an event</h3>
+<p><strong>37.04 %</strong></p>
+</div>
+</div>
+<div id="patients-according-to-gender" class="section level2">
+<h2>Patients according to gender</h2>
+<p><img src="index_files/figure-html/graphchunk1-1.png" /><!-- --></p>
+</div>
+<div id="patients-that-suffered-an-event-according-to-risk-factors" class="section level2">
+<h2>Patients that suffered an event according to risk factors</h2>
+<div id="htmlwidget-192cab6516ae32caddde" style="width:768px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-192cab6516ae32caddde">{"x":{"visdat":{"4780246f71df":["function () ","plotlyVisDat"]},"cur_data":"4780246f71df","attrs":{"4780246f71df":{"y":[13,56,70,75,32,55,45],"x":["Family background","Smoking","Alteration in lipid levels","Hypertension","Diabetes","Obesity","SmeA"],"marker":{"color":["#FFB864","#FFA943","#FF9619","#FA7900","#E77000","#F98C00","#FFC673"]},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":[],"type":"category","categoryorder":"array","categoryarray":["Alteration in lipid levels","Diabetes","Family background","Hypertension","Obesity","SmeA","Smoking"]},"yaxis":{"domain":[0,1],"automargin":true,"title":[]},"hovermode":"closest","showlegend":false},"source":"A","config":{"showSendToCloud":false},"data":[{"y":[13,56,70,75,32,55,45],"x":["Family background","Smoking","Alteration in lipid levels","Hypertension","Diabetes","Obesity","SmeA"],"marker":{"color":["#FFB864","#FFA943","#FF9619","#FA7900","#E77000","#F98C00","#FFC673"],"line":{"color":"rgba(31,119,180,1)"}},"type":"bar","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>Taking into account that patients may suffer from more than one risk factor.</p>
+</div>
+</div>
+<div id="analysis" class="section level1">
+<h1>Analysis</h1>
+<div id="obesity-and-diabetes" class="section level2">
+<h2>Obesity and diabetes</h2>
+<p><img src="index_files/figure-html/graphAnalysisChunk1-1.png" /><!-- --><img src="index_files/figure-html/graphAnalysisChunk1-2.png" /><!-- --></p>
+<p>Percentages of patients that suffered an event:</p>
+<table>
+<colgroup>
+<col width="23%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Not Obese and Not Diabetic</th>
+<th>Obese and Diabetic</th>
+<th>Not Obese and Diabetic</th>
+<th>Obese and Not Diabetic</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>8%</td>
+<td>38%</td>
+<td>14%</td>
+<td>19%</td>
+</tr>
+</tbody>
+</table>
+<p>From this graph we can retrieve that patients that suffer either obesity or diabetes are high risk patients but when those two factors are combined there is almost 38% chance of suffering a cardiac event, while only being a 19% with obesity and 14% with diabetic patients.</p>
+</div>
+<div id="ongoing-pain-and-anginal-syndrome" class="section level2">
+<h2>Ongoing pain and Anginal Syndrome</h2>
+<p><img src="index_files/figure-html/graphAnalysisChunk2-1.png" /><!-- --><img src="index_files/figure-html/graphAnalysisChunk2-2.png" /><!-- --></p>
+<p>Percentages of patients that suffered an event:</p>
+<table>
+<colgroup>
+<col width="23%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Not Ongoing Pain and Not SmeA</th>
+<th>Ongoing Pain and SmeA</th>
+<th>Not Ongoing Pain and SmeA</th>
+<th>Ongoing Pain and Not SmeA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>6%</td>
+<td>20%</td>
+<td>23%</td>
+<td>11%</td>
+</tr>
+</tbody>
+</table>
+<p>This graph shows how SmeA and ongoing pain can be awarded as possible risk factor for cardiac events. As we can see from the graph and statistics, from the patients that had events, a 53% showed positive SmeA and 31% had on going pain.</p>
+</div>
+<div id="localized-pain" class="section level2">
+<h2>Localized pain</h2>
+<p><img src="index_files/figure-html/graphAnalysisChunk3-1.png" /><!-- --></p>
+<p>Percentages of patients that suffered an event:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Pain in one place</th>
+<th>Pain in two places</th>
+<th>Pain in three places</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>11%</td>
+<td>14%</td>
+<td>22%</td>
+</tr>
+</tbody>
+</table>
+<p>The first pie chart shows in a cualitative way the pain locations in patients while the second pie chart shows the pain location in patients that had an event. Below the graphs, the percentages of patients that suffer an event have been shown in a table for cuantitative information.</p>
+</div>
+</div>
+</div>
+
+
+</div>
+
+
+
+
+<script>
+$(document).ready(function () {
+ 	    $('#content img')
+ 	  .addClass("image-lb");
+  $('#content').magnificPopup({
+	      type:'image',
+	      closeOnContentClick: false,
+	      closeBtnInside: false,
+	      delegate: 'img',
+	      gallery: {enabled: false },
+	      image: {
+	        verticalFit: true,
+          titleSrc: 'alt'
+	      }
+ 	    });
+ 	});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+#main .nav-pills > li.active > a,
+#main .nav-pills > li.active > a:hover,
+#main .nav-pills > li.active > a:focus {
+   background-color: #6A4138;
+}
+
+#main .nav-pills > li > a:hover {
+  background-color: #6A4138;
+}
+
+h1,h2,h3,h4,h5,h6,legend{
+    color: #280000;
+}
+
+#nav-top span.glyphicon {
+  color: #6A4138;
+}
+
+#content {
+    background: #fcfcfc;
+    height: 100%;
+    margin-left: 300px;
+    max-width: 1920px;
+    min-height: 100%;
+}
+
+#sidebar h2 {
+    z-index: 200;
+    background-color: #D58031;
+    text-align: center;
+    padding: 0.809em;
+    display: block;
+    color: #fadd5a;
+    font-size: 100%;
+    margin-top: 0px;
+    margin-bottom: 0.809em;
+}
+#table-of-contents ul.nav li.active a {
+    color: #1A918 !important;
+    font-weight: bold;
+    background-color: #D58031;
+    border-right: solid 0px white !important;
+}
+
+#sidebar a {
+    display: inline-block;
+    line-height: 18px;
+    padding: 0.4045em 1.618em;
+    display: block;
+    position: relative;
+    font-size: 90%;
+    color: #b3b3b3;
+    direction: ltr;
+    text-decoration: none;
+}
+
+#table-of-contents ul.nav li.active > a {
+    border-bottom: solid 1px #b3b3b3 !important;
+    border-right: solid 1px #b3b3b3 !important;
+}
+
+#sidebar {
+    position: fixed;
+    top: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #280000;
+    z-index: 200;
+    font-size: 16px;
+}
+
+#postamble {
+    color: #fcfcfc;
+    background: #1f1d1d;
+    border-top: solid 10px #280000;
+    font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
+    font-size: 90%;
+    z-index: 400;
+    padding: 12px;
+}
+
+
+}
+
+#table-of-contents header{
+    color:#000000;
+}
+
+#table-of-contents h2{
+    background-color:#D58031;
+}
+
+#table-of-contents p{
+    font-weight: bold;
+}
+
+
+#main a {
+    background-image: linear-gradient(180deg,#d64a70,#d64a70);
+    color:#6A4138;
+}
+
+a:hover{
+    color:#EE5737
+}
+
+a:visited{
+    color:#6A4138
+}
