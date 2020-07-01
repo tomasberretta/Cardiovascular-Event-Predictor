@@ -1,0 +1,388 @@
+---
+title: "Data analysis for Cardiovascular Event Predictor"
+author: "Agustina Abalo, Tomás Bruno, Tomás Berretta, Pedro Bogunovich"
+date: "14/5/2020"
+site: bookdown::bookdown_site
+output:
+  
+   rmdformats::readthedown:
+    highlight: espresso # Resalto de sintaxis
+    keep_md: yes # Compilar a formato .md
+    number_sections: no # Que las secciones/subsecciones tengan número
+    self_contained: true # Usar dependencias almacenadas localmente 
+    lightbox : yes
+    css: style.css
+    
+---
+
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(echo = TRUE)
+##setup with libraries and dataset
+library(readr)
+library(rmdformats)
+library(treemap)
+library(plotly)
+library (ggplot2)
+library(gridExtra)
+library(RColorBrewer)
+library(caret)
+dataset <- read_csv("C:/Users/Mauricio/Dropbox/Facultad/Segundo/Algoritmos/TPS/TP Riesgo Vascular/dataset.csv")
+```
+
+
+# Introduction
+
+The data collected to make this graphs was taken from an already curated data set in which there are 1002 patients, from whom: 
+
+- 407 are female
+- 595 are male
+
+- Female mean age 47
+- Male mean age 50
+
+- 121 suffered a cardiovascular event
+
+This data obtained is representative for this sample but may not apply for all the population.
+
+## Interesting data values:  {.tabset .tabset-fade}
+
+### Mean age of patients who suffered an event {- .unnumbered}
+``` {r datachunk1, echo = FALSE, message = FALSE, warning = FALSE}
+peopleHadEvent <- subset(dataset, Evento == 1)
+meanAge <- mean(peopleHadEvent$Edad)
+
+```
+**62.41 years**
+
+### With ongoing pain who had symptoms, older than 62 and suffered an event {- .unnumbered}
+``` {r percentagechunk1, echo = FALSE, message = FALSE, warning = FALSE}
+peoplePainSyntoms62 <- subset(dataset, PDA == 1 & SA == 1 & Edad > 62)
+peoplePainSyntomsANDEvent62 <- subset(dataset, PDA == 1 & Edad > 62 & SA == 1 & Evento == 1)
+precentageEventSymp62 <- nrow(peoplePainSyntomsANDEvent62)*100/nrow(peoplePainSyntoms62)
+```
+**37.04 %**
+
+## Patients according to gender
+
+``` {r graphchunk1, echo = FALSE, message = FALSE, warning = FALSE}
+
+Evento<-factor(dataset$Evento,levels=c(0,1),labels=c("Non event","Event"))
+tempTable <- table(dataset$Género,Evento)
+rownames(tempTable) <- c("Female", "Male")
+barplot(tempTable,beside=TRUE,legend.text=TRUE,col=c("#faa608","#fa5208"))
+
+```
+
+Women with clinically manifest CHD are in general older than men, with a higher expression of cardiovascular risk factors. Although women and men share most classic risk factors, the significance and the relative weighting of these factors are different. At younger ages (<50 years) smoking is more deleterious in women than in men, with a larger negative impact of the total number of cigarettes smoked per day. Smoking increases the risk of a first acute myocardial infarction (AMI) relatively more in females than in men. In young premenopausal women smoking causes a downregulation of the oestrogen-dependent vasodilatation of the endothelial wall. Whether smoking reduces age at menopause remains a matter of debate.
+
+##  Patients that suffered an event according to risk factors
+
+There are many risk factors for CHD and some can be controlled but not others. The risk factors that can be controlled (modifiable) are: High BP; high blood cholesterol levels; smoking; diabetes; overweight or obesity; lack of physical activity; unhealthy diet and stress. Those that cannot be controlled (conventional) are: Age (simply getting older increases risk); sex (men are generally at greater risk of coronary artery disease); family history; and race.
+
+``` {r graphchunk2, echo = FALSE, message = FALSE, warning = FALSE}
+
+datEvent <- subset (dataset, Evento == 1)
+patientsAHF <- subset (datEvent, AHF == 1)
+patientsTBQ  <- subset (datEvent, TBQ == 1)
+patientsDLP  <- subset (datEvent, DLP == 1)
+patientsHTA  <- subset (datEvent, HTA == 1)
+
+patientsDBT  <- subset (datEvent, DBT == 1)
+patientsOBES  <- subset (datEvent, OBES == 1)
+patientsSmeA  <- subset (datEvent, SmeA == 1)
+
+numPatientsAHF <- nrow(patientsAHF)
+numPatientsTBQ  <- nrow(patientsTBQ)
+numPatientsDLP  <- nrow(patientsDLP)
+numPatientsHTA  <- nrow(patientsHTA)
+
+numPatientsDBT  <- nrow(patientsDBT)
+numPatientsOBES  <- nrow(patientsOBES)
+numPatientsSmeA  <- nrow(patientsSmeA)
+
+colors1 <- c("#FFB864", "#FFA943", "#FF9619", "#FA7900", "#E77000", "#F98C00","#FFC673")
+
+plot_ly(
+  y = c(numPatientsAHF,numPatientsTBQ, numPatientsDLP, numPatientsHTA, numPatientsDBT, numPatientsOBES, numPatientsSmeA),
+  x = c("Family background","Smoking","Alteration in lipid levels","Hypertension" , "Diabetes", "Obesity", "SmeA" ),
+  type = "bar",
+  marker = list(color = colors1))
+
+```
+
+Taking into account that patients may suffer from more than one risk factor.
+
+
+# Analysis 
+
+## Obesity and diabetes
+
+
+Within this escalating healthcare problem of monumental proportions, obesity-associated type 2 diabetes accounts for 90–95% of all diagnosed diabetes in adults. In fact, diabetes and insulin resistance are powerful predictors of cardiovascular morbidity and mortality, and each is an independent risk factor for death in patients with heart failure. Yet, the complex mechanisms underlying the deleterious impact of diabetes on the heart and vasculature are poorly characterized.
+
+Diabetes-associated cardiovascular diseases arise by a variety of mechanisms. Atherosclerotic disease often emerges in multiple vascular beds. Also, patients with diabetes are often hypertensive. Obesity is associated with a pro-inflammatory state marked by chronic elevations of systemic adrenergic activity, dyslipidemia and hyperglycemia. Circulating levels of a variety of bioactive molecules are perturbed. Clearly, the underlying pathophysiology is complex.
+
+``` {r graphAnalysisChunk1, echo = FALSE, message = FALSE, warning = FALSE}
+
+#tabla de obesos y no obesos contra diabeticos y no diabeticos. Esto da 4 numeros/porcentajes 
+#table(dataset$DBT,dataset$OBES)
+
+value <- c(731 ,157 ,49,
+           65)
+
+group <- c(paste("Not Obese Not Diabetic ",731),paste("Obese Not Diabetic ",157),
+           paste("Not Obese Diabetic ",49),paste("Obese Diabetic ",65)) 
+data <- data.frame(group,value)
+treemap(data,
+        index="group",
+        palette = "RdYlBu",
+        title = "Obese and Diabetic Patients",
+        vSize="value",
+        type="index",
+        border.lwds = c(2,2),
+        mapping(value)
+        )
+
+
+##dataEvent <- subset(dataset, Evento == 1)
+##table(dataEvent$DBT, dataEvent$OBES)
+value <- c(59 ,30, 7,25)
+
+group <- c(paste("Not Obese Not Diabetic ",59),paste("Obese Not Diabetic ",30),
+           paste("Not Obese Diabetic ",7),paste("Obese Diabetic ",25)) 
+data <- data.frame(group,value)
+treemap(data,
+        index="group",
+        palette = "RdYlBu",
+        title = "Obese and Diabetic Patients that had an Event",
+        vSize="value",
+        type="index",
+        border.lwds = c(2,2),
+        mapping(value)
+        )
+
+
+```
+
+Percentages of patients that suffered an event:
+
+Not Obese and Not Diabetic | Obese and Diabetic | Not Obese and Diabetic | Obese and Not Diabetic
+------------ | ------------- | ------------- | -------------
+8% | 38% | 14% | 19%
+
+From this graph we can retrieve that patients that suffer either obesity or diabetes are high risk patients but when those two factors are combined there is almost 38% chance of suffering a cardiac event, while only being a 19% with obesity and 14% with diabetic patients.
+
+
+## Ongoing pain and Acute Coronary Syndrome
+
+Chest pain or discomfort is the most common symptom of the Acute Coronary Syndrome. However, the signs and symptoms can vary significantly based on your age, gender, and other medical conditions. If you are a woman, an older adult, or have diabetes, you are more likely to experience signs and symptoms without chest pain or discomfort.
+
+``` {r graphAnalysisChunk2, echo = FALSE, message = FALSE, warning = FALSE}
+
+#Porcentaje de pacientes que poseen dolor actual que a su vez tiene SmeA positivo (tablita contra negativos)
+#table(dataset$SmeA,dataset$PDA)
+
+value <- c(186, 594, 43, 179)
+group <- c(paste("Not Ongoing Pain Not SmeA",186),paste("Ongoing Pain Not SmeA ",594),
+           paste("Not Ongoing Pain SmeA ",43),paste("Ongoing Pain SmeA ",179)) 
+data <- data.frame(group,value)
+treemap(data,
+        index="group",
+        palette = "RdYlBu",
+        title = "Smea and Ongoing Pain Patients",
+        vSize="value",
+        type="index",
+        border.lwds = c(2,2),
+        mapping(value)
+        )
+
+#table <- matrix(c(186, 594, 43, 179),ncol=2,byrow=TRUE)
+#  colnames(table) <- c("Not Actual Pain","Actual Pain")
+#rownames(table) <- c("Not SmeA","SmeA")
+#table <- as.table(table)
+#plot(table,main="Smea and Pain Status")
+# eventPeople <- subset(dataset, Evento == 1)
+#table(eventPeople$SmeA,eventPeople$PDA)
+
+
+value <- c(11, 65, 10, 35)
+group <- c(paste("Not Ongoing Pain Not SmeA ",11),paste("Ongoing Pain Not SmeA ",65),
+           paste("Not Ongoing Pain SmeA ",10),paste("Ongoing Pain SmeA ",35)) 
+data <- data.frame(group,value)
+treemap(data,
+        index="group",
+        palette = "RdYlBu",
+        title = "Smea and Ongoing Pain Patients that had an Event",
+        vSize="value",
+        type="index",
+        border.lwds = c(2,2),
+        mapping(value)
+        )
+
+```
+
+Percentages of patients that suffered an event:
+
+Not Ongoing Pain and Not SmeA | Ongoing Pain and SmeA | Not Ongoing Pain and SmeA | Ongoing Pain and Not SmeA
+------------ | ------------- | ------------- | -------------
+6% | 20% | 23% | 11%
+
+This graph shows how SmeA and ongoing pain can be awarded as possible risk factor for cardiac events. As we can see from the graph and statistics, from the patients that had events, a 53% showed positive SmeA and 31% had on going pain.
+
+
+##  Localized pain
+
+``` {r graphAnalysisChunk3, echo = FALSE, message = FALSE, warning = FALSE}
+
+UD <- c(1, 2, 3)
+Patients <- c(713, 258, 31)
+PatientsEvent <- c(77, 37, 7)
+newdata<- data.frame(UD,Patients, PatientsEvent)
+
+a1 <- ggplot(data = newdata, aes(x = "", y = Patients, fill = UD))+
+  geom_bar(stat = "identity", position = position_fill() )+
+  scale_fill_gradientn(colours = brewer.pal(5,"YlOrBr")) +
+  geom_text(aes(label = Patients), position = position_fill(vjust = 0.5)) +
+  coord_polar(theta = "y")+
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank()) + 
+  theme(legend.position='bottom')  + 
+  guides(fill=guide_legend(nrow=2, byrow=TRUE)) +
+  ggtitle("Pain locations in Patients")
+
+
+a2 <- ggplot(data = newdata, aes(x = "", y = PatientsEvent, fill = UD )) + 
+  geom_bar(stat = "identity", position = position_fill()) +
+  scale_fill_gradientn(colours = brewer.pal(5,"YlOrBr")) +
+  geom_text(aes(label = PatientsEvent), position = position_fill(vjust = 0.5)) +
+  coord_polar(theta = "y") +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank()) + 
+  theme(legend.position='bottom') + 
+  guides(fill=guide_legend(nrow=2, byrow=TRUE))+
+  ggtitle("Pain locations in Patients that had an event")
+
+
+grid.arrange(a1, a2, ncol=2)
+
+
+```
+
+Percentages of patients that suffered an event:
+
+Pain in one place | Pain in two places | Pain in three places
+------------ | ------------- | -------------
+11% | 14% | 22% 
+
+The first pie chart shows in a cualitative way the pain locations in patients while the second pie chart shows the pain location in patients that had an event. Below the graphs, the percentages of patients that suffer  an event have been shown in a table for cuantitative information.
+
+
+# Predictor
+
+
+##  Model
+
+To determine the variables to be used in the predictor the method RandomForest was used to decide those which were of higher importance.
+The variables selected are:
+
+  - Age
+  - Family History
+  - Obesity
+  - Alteration in lipid levels
+  - Acute Coronary Syndrome
+  - Ongoing pain
+
+We decided to use a logistic regression model for the development of the predictor.
+
+``` {r predChunk1, echo = FALSE, message = FALSE, warning = FALSE}
+
+  #Parte predictor
+index <-c(1,3,4,5,9,10,11,12,13,14,15,16,17,20,22,23,25,26,27,28,29,30,31,32,34,35,37,40,42,43,46,47,48,49,51,55,56,57,58,59,60,61,62,65,66,68,74,75,77,78,80,81,82,83,84,85,86,87,92,95,96,97,99,101,102,105,106,107,108,109,110,111,112,113,114,115,117,118,119,121,122,124,125,128,130,131,132,133,135,136,137,138,139,140,142,143,144,145,147,148,149,150,151,152,153,154,155,156,158,160,161,162,166,168,169,170,171,172,173,174,175,176,177,178,180,183,184,185,186,187,188,189,190,191,193,197,199,200,201,202,203,204,205,206,207,209,210,211,212,213,214,215,216,219,220,222,223,224,225,227,228,229,230,231,233,236,237,238,239,240,243,245,246,247,248,249,250,253,254,256,257,260,261,263,264,266,267,269,272,273,274,275,276,277,278,279,280,282,283,284,285,287,289,290,291,292,293,294,297,301,302,306,307,308,309,310,311,313,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,336,337,338,339,340,341,342,343,345,346,348,349,350,351,352,353,354,355,356,357,358,359,361,362,363,365,368,369,370,372,373,374,376,379,380,381,384,385,386,387,388,391,392,393,394,397,399,400,404,405,406,408,409,410,413,414,416,418,423,425,426,427,430,435,436,437,439,440,441,442,443,444,445,446,447,448,451,452,454,455,457,458,459,461,462,463,465,467,468,470,471,472,473,474,475,476,477,478,479,481,482,484,485,486,488,489,490,491,492,493,494,495,496,497,499,500,502,503,504,506,508,510,511,514,515,516,517,518,519,523,524,527,528,529,530,531,532,533,534,535,536,540,541,542,543,546,548,549,550,551,552,553,554,555,558,559,560,561,564,565,566,568,569,570,571,572,575,578,579,581,582,583,584,585,586,587,588,589,592,593,597,598,600,601,602,604,605,606,608,609,614,615,617,618,620,621,623,625,626,628,629,631,632,633,635,637,640,641,642,643,644,645,646,648,649,651,652,653,657,660,661,662,665,666,667,669,672,673,674,675,676,680,681,682,684,685,686,687,688,689,690,692,694,695,696,699,700,702,703,706,708,709,713,715,716,717,718,719,720,721,722,725,726,727,728,729,730,732,733,734,736,737,739,740,741,742,743,744,745,746,747,748,749,751,752,753,754,755,756,757,758,759,760,761,762,763,764,765,766,767,770,773,774,775,776,777,778,779,780,781,783,784,786,787,789,792,793,794,795,797,798,799,801,803,804,805,806,807,808,809,811,812,814,815,817,819,820,821,823,826,827,829,832,833,835,836,837,838,841,842,844,845,846,848,850,851,852,853,854,855,856,857,858,859,860,861,862,863,870,872,873,874,877,878,879,880,882,883,884,885,886,887,888,893,894,895,896,898,899,900,901,902,903,904,907,908,915,916,917,918,919,920,921,922,923,924,926,927,928,929,930,931,932,933,936,937,938,942,943,944,945,946,947,948,949,952,953,954,955,958,961,962,963,964,966,967,968,970,971,972,973,975,976,977,979,981,983,984,985,986,987,988,989,990,991,993,994,995,996,997,998,999,1000,1002)
+trainSet <- dataset[ index,]
+testSet <- dataset[-index,]
+
+#Con regresion logistica
+event.out <- glm(Evento~Edad+AHF+OBES+DLP+SmeA+PDA, data=trainSet, family="binomial")
+
+predsAll<-predict(event.out, type = "response")
+
+stats <- boxplot(predsAll ~ trainSet$Evento, col = c("#faa608","#fa5208"), ylab = "Probability",xlab = "No Event / Event")$stats
+
+
+preds <- predict(event.out, type = "response",
+                 se.fit = TRUE, interval="confidence",
+                 newdata = testSet)
+
+
+```
+
+## Validation
+
+### Cross Validation
+
+The following boxplot was generated with the 30% of the patients who belong to the test set. (30% of the complete data set)
+
+``` {r predChunk2, echo = FALSE, message = FALSE, warning = FALSE}
+
+  boxplot(preds$fit ~ testSet$Evento, col = c("#faa608","#fa5208"),
+        ylab =  "Probability",
+        xlab = "No Event / Event")
+
+```
+
+### Confusion Matrix
+
+``` {r predChunk3, echo = FALSE, message = FALSE, warning = FALSE}
+#validation
+
+
+limit <- (stats[4] + stats[7])/2
+
+
+preds$fit[preds$fit < limit] <- 0
+preds$fit[preds$fit > limit] <- 1
+
+
+#confusionMatrix(factor(preds$fit),factor(testSet$Evento))
+
+
+```
+
+
+| | Predicted "No Event" | Predicted "Event"
+------------ | ------------- | -------------
+**Real "No Event"** | 223 | 50 
+**Real "Event"** | 8 | 19
+
+### AUROC Curve
+
+``` {r predChunk4, echo = FALSE, message = FALSE, warning = FALSE}
+
+library(ROCR)
+
+# función para graficar la curva AUROC
+plotROC <- function(pred){
+  perf<- performance(pred,"tpr","fpr")
+  plot(perf)
+  AUC<-performance(pred,"auc")@y.values[[1]]
+  grid()
+  text(.6,.2,sprintf("AUC=%0.3f", AUC))
+  abline(0,1,col="red", lty = 2)
+}
+
+ 
+
+predaux<-prediction(as.numeric(preds$fit),testSet$Evento)
+
+perf <- performance(predaux, "auc")
+
+plotROC(predaux)
+
+
+```
+
+# Contact
+
+- **Abalo Agustina:** agustina.abalo@ing.austral.edu.ar
+- **Berretta Tomás:** tomas.berretta@ing.austral.edu.ar
+- **Bruno Tomás:** tomas.bruno@ing.austral.edu.ar

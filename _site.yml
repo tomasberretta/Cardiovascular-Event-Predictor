@@ -1,0 +1,10 @@
+name: "Data analysis for Cardiovascular Event Predictor"
+site: bookdown::bookdown_site
+output:
+   rmdformats::readthedown:
+    highlight: espresso # Resalto de sintaxis
+    keep_md: yes
+    number_sections: no
+    self_contained: true 
+    lightbox : yes
+    css: style.css
